@@ -15,7 +15,7 @@ static const char *const usage[] = {
 
 int main(int argc, const char **argv)
 {
-    struct pci_access *pacc;
+    pci_obj_t pci_obj;
     nb_t nb;
     uint32_t message = 0, iarg0 = 0, iarg1 = 0;
     uint32_t iarg2 = 0, iarg3 = 0, iarg4 = 0, iarg5 = 0;
@@ -41,16 +41,20 @@ int main(int argc, const char **argv)
     argparse_describe(&argparse, "\n Ryzen NB SMU Service Request tool.", "\nWARNING: Use at your own risk!\nBy Jiaxun Yang <jiaxun.yang@flygoat.com>, Under GPL-2.0.");
     argc = argparse_parse(&argparse, argc, argv);
 
-    pacc = pci_alloc();
-    pci_init(pacc);
-    nb = pci_get_dev(pacc, 0, 0, 0, 0);
-    pci_fill_info(nb, PCI_FILL_IDENT | PCI_FILL_BASES | PCI_FILL_CLASS);
-
-    if (nb->device_id != NB_DEVICE_ID){
-        printf("Not a Ryzen NB Device\n");
-        err = -1;
+    pci_obj = init_pci_obj();
+    if(!pci_obj){
+        printf("Unable to get PCI Obj\n");
+        return -1;
     }
-    args = malloc(sizeof(*args));
+
+    nb = get_nb(pci_obj);
+    if(!nb){
+        printf("Unable to get NB Obj\n");
+        err = -1;
+        goto out_free_pci_obj;
+    }
+
+    args = (smu_service_args_t *)malloc(sizeof(*args));
     memset(args, 0, sizeof(*args));
 
     args->arg0 = iarg0;
@@ -85,11 +89,13 @@ int main(int argc, const char **argv)
             err = -1;
     }
 
-if(!err){
+    if(!err){
     printf("Result arg0: 0x%x, arg1:0x%x, arg2:0x%x, arg3:0x%x, arg4: 0x%x, arg5: 0x%x\n",  \
         args->arg0, args->arg1, args->arg2, args->arg3, args->arg4, args->arg5);
-}
+    }
 
     free(args);
-    pci_cleanup(pacc);
+out_free_pci_obj:   
+    free_pci_obj(pci_obj);
+    return err;
 }

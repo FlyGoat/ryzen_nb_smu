@@ -4,18 +4,6 @@
 
 #include "nb_smu_ops.h"
 
-u32 nb_reg_read(nb_t nb, u32 addr)
-{
-    pci_write_long(nb, NB_PCI_REG_ADDR_ADDR, (addr & (~0x3)));
-    return pci_read_long(nb, NB_PCI_REG_DATA_ADDR);
-}
-
-void nb_reg_write(nb_t nb, u32 addr, u32 data)
-{
-    pci_write_long(nb, NB_PCI_REG_ADDR_ADDR, addr);
-    pci_write_long(nb, NB_PCI_REG_DATA_ADDR, data);
-}
-
 u32 smu_service_req(nb_t nb ,u32 id ,smu_service_args_t *args)
 {
     u32 response = 0x0;
