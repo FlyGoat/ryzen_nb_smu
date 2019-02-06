@@ -38,7 +38,7 @@ int main(int argc, const char **argv)
 
     struct argparse argparse;
     argparse_init(&argparse, options, usage, 0);
-    argparse_describe(&argparse, "\n Ryzen NB SMU Service Request tool.", "\nWARNING: Use at your own risk!\nBy Jiaxun Yang <jiaxun.yang@flygoat.com>, Under GPL-2.0.");
+    argparse_describe(&argparse, "\n Ryzen NB SMU Service Request tool.", "\nWARNING: Use at your own risk!\nBy Jiaxun Yang <jiaxun.yang@flygoat.com>, Under LGPL.");
     argc = argparse_parse(&argparse, argc, argv);
 
     pci_obj = init_pci_obj();
