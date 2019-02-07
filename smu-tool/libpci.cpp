@@ -18,9 +18,13 @@ nb_t get_nb(pci_obj_t obj){
     return nb;
 }
 
-int free_pci_obj(pci_obj_t obj){
+void free_nb(nb_t nb){
+    pci_free_dev(nb);
+}
+
+
+void free_pci_obj(pci_obj_t obj){
     pci_cleanup(obj);
-    return 0;
 }
 
 u32 nb_reg_read(nb_t nb, u32 addr)

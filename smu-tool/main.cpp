@@ -15,15 +15,23 @@ static const char *const usage[] = {
 
 int main(int argc, const char **argv)
 {
-    pci_obj_t pci_obj;
-    nb_t nb;
+    /* Input args */
     uint32_t message = 0, iarg0 = 0, iarg1 = 0;
     uint32_t iarg2 = 0, iarg3 = 0, iarg4 = 0, iarg5 = 0;
+    int mp1 = 0, psmu = 0;
+
+    /* Objects */
+    pci_obj_t pci_obj;
+    nb_t nb;
+    smu_t *smu;
     smu_service_args_t *args;
     int err = 0;
 
     struct argparse_option options[] = {
         OPT_HELP(),
+        OPT_GROUP("SMU Type"),
+        OPT_BOOLEAN('m',"mp1", &mp1, "MP1 SMU"),
+        OPT_BOOLEAN('p',"psmu", &psmu, "Pwr SMU"),
         OPT_GROUP("Arguments"),
         OPT_U32('n', "message", &message, "The reqeust message"),        
         OPT_U32('a', "arg0", &iarg0, "The first argument"),
@@ -42,16 +50,30 @@ int main(int argc, const char **argv)
     argc = argparse_parse(&argparse, argc, argv);
 
     pci_obj = init_pci_obj();
-    if(!pci_obj){
+    if (!pci_obj){
         printf("Unable to get PCI Obj\n");
         return -1;
     }
 
     nb = get_nb(pci_obj);
-    if(!nb){
+    if (!nb){
         printf("Unable to get NB Obj\n");
         err = -1;
         goto out_free_pci_obj;
+    }
+
+    if (mp1){
+        smu = get_smu(nb, TYPE_MP1);
+    } else if (psmu){
+        smu = get_smu(nb, TYPE_PSMU);
+    } else {
+        smu = get_smu(nb, TYPE_MP1);
+    }
+ 
+    if(!smu){
+        printf("Unable to get SMU\n");
+        err = -1;
+        goto out_free_nb;
     }
 
     args = (smu_service_args_t *)malloc(sizeof(*args));
@@ -64,7 +86,7 @@ int main(int argc, const char **argv)
     args->arg4 = iarg4;
     args->arg5 = iarg5;
 
-    switch(smu_service_req(nb, message, args)){
+    switch(smu_service_req(smu, message, args)){
         case REP_MSG_OK:
             printf("Service Request OK\n");
             break;
@@ -95,6 +117,9 @@ int main(int argc, const char **argv)
     }
 
     free(args);
+    free_smu(smu);
+out_free_nb:
+    free_nb(nb);
 out_free_pci_obj:   
     free_pci_obj(pci_obj);
     return err;

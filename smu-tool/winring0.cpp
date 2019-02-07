@@ -23,9 +23,12 @@ nb_t get_nb(pci_obj_t obj){
     return &nb_pci_address;
 }
 
-int free_pci_obj(pci_obj_t obj){
+void free_nb(nb_t){
+    return;
+}
+
+void free_pci_obj(pci_obj_t obj){
     DeinitializeOls();
-    return 0;
 }
 
 u32 nb_reg_read(nb_t nb, u32 addr)
