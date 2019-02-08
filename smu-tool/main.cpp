@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-2.0
+// SPDX-License-Identifier: LGPL
 /* Copyright (C) 2018-2019 Jiaxun Yang <jiaxun.yang@flygoat.com> */
 /* Ryzen NB SMU Service Request Tool */
 

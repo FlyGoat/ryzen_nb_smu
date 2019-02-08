@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-2.0
+// SPDX-License-Identifier: LGPL
 /* Copyright (C) 2018-2019 Jiaxun Yang <jiaxun.yang@flygoat.com> */
 /* Access PCI Config Space - winring0 */
 
@@ -31,13 +31,13 @@ void free_pci_obj(pci_obj_t obj){
     DeinitializeOls();
 }
 
-u32 nb_reg_read(nb_t nb, u32 addr)
+u32 smn_reg_read(nb_t nb, u32 addr)
 {
     WritePciConfigDword(*nb, NB_PCI_REG_ADDR_ADDR, (addr & (~0x3)));
     return ReadPciConfigDword(*nb, NB_PCI_REG_DATA_ADDR);
 }
 
-void nb_reg_write(nb_t nb, u32 addr, u32 data)
+void smn_reg_write(nb_t nb, u32 addr, u32 data)
 {
     WritePciConfigDword(*nb, NB_PCI_REG_ADDR_ADDR, addr);
     WritePciConfigDword(*nb, NB_PCI_REG_DATA_ADDR, data);

@@ -1,4 +1,4 @@
-/* SPDX-License-Identifier: GPL-2.0 */
+/* SPDX-License-Identifier: LGPL */
 /* Copyright (C) 2018-2019 Jiaxun Yang <jiaxun.yang@flygoat.com> */
 /* Ryzen NB SMU Service Request Opreations */
 
@@ -92,9 +92,9 @@ nb_t get_nb(pci_obj_t obj);
 
 void free_nb(nb_t nb);
 
-u32 nb_reg_read(nb_t nb, u32 addr);
+u32 smn_reg_read(nb_t nb, u32 addr);
 
-void nb_reg_write(nb_t nb, u32 addr, u32 data);
+void smn_reg_write(nb_t nb, u32 addr, u32 data);
 
 
 smu_t *get_smu(nb_t nb, int smu_type);

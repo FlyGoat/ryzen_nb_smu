@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-2.0
+// SPDX-License-Identifier: LGPL
 /* Copyright (C) 2018-2019 Jiaxun Yang <jiaxun.yang@flygoat.com> */
 /* Ryzen NB SMU Service Request Opreations */
 
@@ -12,27 +12,27 @@ u32 smu_service_req(smu_t *smu ,u32 id ,smu_service_args_t *args)
         args->arg0, args->arg1, args->arg2, args->arg3, args->arg4, args->arg5);
 
     /* Clear the response */
-    nb_reg_write(smu->nb, smu->rep, 0x0);
+    smn_reg_write(smu->nb, smu->rep, 0x0);
     /* Pass arguments */
-    nb_reg_write(smu->nb, C2PMSG_ARGx_ADDR(smu->arg_base, 0), args->arg0);
-    nb_reg_write(smu->nb, C2PMSG_ARGx_ADDR(smu->arg_base, 1), args->arg1);
-    nb_reg_write(smu->nb, C2PMSG_ARGx_ADDR(smu->arg_base, 2), args->arg2);
-    nb_reg_write(smu->nb, C2PMSG_ARGx_ADDR(smu->arg_base, 3), args->arg3);
-    nb_reg_write(smu->nb, C2PMSG_ARGx_ADDR(smu->arg_base, 4), args->arg4);
-    nb_reg_write(smu->nb, C2PMSG_ARGx_ADDR(smu->arg_base, 5), args->arg5);
+    smn_reg_write(smu->nb, C2PMSG_ARGx_ADDR(smu->arg_base, 0), args->arg0);
+    smn_reg_write(smu->nb, C2PMSG_ARGx_ADDR(smu->arg_base, 1), args->arg1);
+    smn_reg_write(smu->nb, C2PMSG_ARGx_ADDR(smu->arg_base, 2), args->arg2);
+    smn_reg_write(smu->nb, C2PMSG_ARGx_ADDR(smu->arg_base, 3), args->arg3);
+    smn_reg_write(smu->nb, C2PMSG_ARGx_ADDR(smu->arg_base, 4), args->arg4);
+    smn_reg_write(smu->nb, C2PMSG_ARGx_ADDR(smu->arg_base, 5), args->arg5);
     /* Send message ID */
-    nb_reg_write(smu->nb, smu->msg, id);
+    smn_reg_write(smu->nb, smu->msg, id);
     /* Wait until reponse changed */
     while(response == 0x0) {
-        response = nb_reg_read(smu->nb, smu->rep);
+        response = smn_reg_read(smu->nb, smu->rep);
     }
     /* Read back arguments */
-    args->arg0 = nb_reg_read(smu->nb, C2PMSG_ARGx_ADDR(smu->arg_base, 0));
-    args->arg1 = nb_reg_read(smu->nb, C2PMSG_ARGx_ADDR(smu->arg_base, 1));
-    args->arg2 = nb_reg_read(smu->nb, C2PMSG_ARGx_ADDR(smu->arg_base, 2));
-    args->arg3 = nb_reg_read(smu->nb, C2PMSG_ARGx_ADDR(smu->arg_base, 3));
-    args->arg4 = nb_reg_read(smu->nb, C2PMSG_ARGx_ADDR(smu->arg_base, 4));
-    args->arg5 = nb_reg_read(smu->nb, C2PMSG_ARGx_ADDR(smu->arg_base, 5));
+    args->arg0 = smn_reg_read(smu->nb, C2PMSG_ARGx_ADDR(smu->arg_base, 0));
+    args->arg1 = smn_reg_read(smu->nb, C2PMSG_ARGx_ADDR(smu->arg_base, 1));
+    args->arg2 = smn_reg_read(smu->nb, C2PMSG_ARGx_ADDR(smu->arg_base, 2));
+    args->arg3 = smn_reg_read(smu->nb, C2PMSG_ARGx_ADDR(smu->arg_base, 3));
+    args->arg4 = smn_reg_read(smu->nb, C2PMSG_ARGx_ADDR(smu->arg_base, 4));
+    args->arg5 = smn_reg_read(smu->nb, C2PMSG_ARGx_ADDR(smu->arg_base, 5));
 
     DBG("SMU_SERVICE REP: REP: 0x%x, arg0: 0x%x, arg1:0x%x, arg2:0x%x, arg3:0x%x, arg4: 0x%x, arg5: 0x%x\n",  \
         response, args->arg0, args->arg1, args->arg2, args->arg3, args->arg4, args->arg5);
