@@ -35,7 +35,7 @@ MSG is the ID of service request, 6*ARGS are arguments, REP is respond of servic
 - Read back ARGs
 - Check the REP if the request proceeded sucessfuly
 
-## A table of request ID
+## A table of request ID for MP1
 | Name | ID | Note |
 | :------| :------ | :------ |
 | TestMessage | 0x1 |  |
@@ -127,6 +127,57 @@ MSG is the ID of service request, 6*ARGS are arguments, REP is respond of servic
 | UnknownCmd | 0xFE |
 | CmdRejectedPrereq | 0xFD |
 | CmdRejectedBusy | 0xFC |
+
+# A table of SMU Feature ID
+| Name             | Bit | Note |
+| :------------------| :-----| :------|
+| CCLK_CONTROLLER  | 0 |      |
+| FAN_CONTROLLER   | 1 |      |
+| DATA_CALCULATION | 2 |      |
+| PPT              | 3 |      |
+| TDC              | 4 |      |
+| THERMAL          | 5 |      |
+| FIT              | 6 |      |
+| EDC              | 7 |      |
+| PLL_POWER_DOWN   | 8 |      |
+| ULV              | 9 |      |
+| VDDOFF           | 10 |      |
+| VCN_DPM          | 11 |      |
+| ACP_DPM          | 12 |      |
+| ISP_DPM          | 13 |      |
+| FCLK_DPM         | 14 |      |
+| SOCCLK_DPM       | 15 |      |
+| MP0CLK_DPM       | 16 |      |
+| LCLK_DPM         | 17 |      |
+| SHUBCLK_DPM      | 18 |      |
+| DCEFCLK_DPM      | 19 |      |
+| GFX_DPM          | 20 |      |
+| DS_GFXCLK        | 21 |      |
+| DS_SOCCLK        | 22 |      |
+| DS_LCLK          | 23 |      |
+| DS_DCEFCLK       | 24 |      |
+| DS_SHUBCLK       | 25 |      |
+| RM               | 26 |      |
+| S0i2             | 27 |      |
+| WHISPER_MODE     | 28 |      |
+| DS_FCLK          | 29 |      |
+| DS_SMNCLK        | 30 |      |
+| DS_MP1CLK        | 31 |      |
+| DS_MP0CLK        | 32 |      |
+| MGCG             | 33 |      |
+| DS_FUSE_SRAM     | 34 |      |
+| GFX_CKS          | 35 |      |
+| PSI0             | 36 |      |
+| PROCHOT          | 37 |      |
+| CPUOFF           | 38 |      |
+| STAPM            | 39 |      |
+| CORE_CSTATES     | 40 |      |
+| GFX_DUTY_CYCLE   | 41 |      |
+| AA_MODE          | 42 |      |
+| LIVMIN           | 43 |      |
+| RLC_PACE         | 44 |      |
+
+-These can be enabled with EnableSmuFeatures (0x5) or disabled with DisableSmuFeatures (0x6)   
 
 # PPtable
 PowerPlay Table
